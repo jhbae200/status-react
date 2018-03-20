@@ -1,4 +1,4 @@
-.PHONY: react-native test
+.PHONY: react-native test setup
 
 help: ##@other Show this help
 	@perl -e '$(HELP_FUN)' $(MAKEFILE_LIST)
@@ -31,7 +31,7 @@ setup: ##@prepare Install all the requirements for status-react
 
 prepare: ##@prepare Install dependencies and prepare workspace
 	lein deps
-	npm install
+	yarn install
 	./re-natal deps
 	./re-natal use-figwheel
 	./re-natal enable-source-maps
@@ -138,10 +138,9 @@ android-ports: ##@other Add reverse proxy to Android Device/Simulator
 startdev-%:
 	$(eval SYSTEM := $(word 2, $(subst -, , $@)))
 	$(eval DEVICE := $(word 3, $(subst -, , $@)))
-	if [[ "$(SYSTEM)" == "android" ]]; then\
-	  ${MAKE} prepare && ${MAKE} android-ports; \
-	else \
-	  ${MAKE} prepare-ios; \
-	fi
+	case "$(SYSTEM)" in \
+	  "android") ${MAKE} prepare && ${MAKE} android-ports;; \
+	  "ios")      ${MAKE} prepare-ios;; \
+	esac
 	${MAKE} dev-$(SYSTEM)-$(DEVICE)
 	${MAKE} -j2 react-native repl-$(SYSTEM)
