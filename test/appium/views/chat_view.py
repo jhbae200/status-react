@@ -43,10 +43,10 @@ class RequestCommand(BaseButton):
         self.locator = self.Locator.xpath_selector("//*[@text='/request']")
 
 
-class ChatOptions(BaseButton):
+class ChatMenuButton(BaseButton):
     def __init__(self, driver):
-        super(ChatOptions, self).__init__(driver)
-        self.locator = self.Locator.xpath_selector('(//android.view.ViewGroup[@content-desc="icon"])[2]')
+        super(ChatMenuButton, self).__init__(driver)
+        self.locator = self.Locator.accessibility_id('chat-menu-button')
 
 
 class MembersButton(BaseButton):
@@ -143,7 +143,7 @@ class ChatView(BaseView):
         self.send_command = SendCommand(self.driver)
         self.request_command = RequestCommand(self.driver)
 
-        self.chat_options = ChatOptions(self.driver)
+        self.chat_options = ChatMenuButton(self.driver)
         self.members_button = MembersButton(self.driver)
         self.delete_chat_button = DeleteChatButton(self.driver)
 
